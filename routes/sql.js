@@ -60,7 +60,7 @@ async function connectAndQuery() {
         var poolConnection = await sql.connect(config);
 
         console.log("Reading rows from the Table...");
-        var resultSet = await poolConnection.request().query(`SELECT * FROM [SalesLT].[Product]`);
+        var resultSet = await poolConnection.request().query(`SELECT * FROM component_co2e_data`);
 
         console.log(`${resultSet.recordset.length} rows returned.`);
 
