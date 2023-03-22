@@ -1,5 +1,7 @@
 import { initViewer, loadModel } from './viewer.js';
 
+var SQL_data = {};
+
 initViewer(document.getElementById('preview')).then(viewer => {
     const urn = window.location.hash?.substring(1);
     setupModelSelection(viewer, urn);

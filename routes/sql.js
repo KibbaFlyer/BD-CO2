@@ -47,7 +47,6 @@ const config = {
 router.get('/sql/connectAndQuery', async function (req, res, next) {
     try {
         var sql_data = await connectAndQuery();
-        console.log(sql_data);
         return res.json(sql_data);
     } catch (err) {
         next(err);
@@ -61,16 +60,21 @@ async function connectAndQuery() {
         console.log("Reading rows from the Table...");
         var resultSet = await poolConnection.request().query(`SELECT * FROM component_co2e_data`);
 
-        //console.log(`${resultSet.recordset.length} rows returned.`);
+        console.log(`${resultSet.recordset.length} rows returned.`);
 
         // Convert recordset to JSON object
         var jsonString = JSON.stringify(resultSet.recordset);
         var jsonObject = JSON.parse(jsonString);
-
-        //console.log(jsonObject);
+          
+        const result = jsonObject.reduce((obj, item) => {
+        obj[item.Type] = obj[item.Type] || [];
+        obj[item.Type].push(item);
+        return obj;
+        }, {});
+    
         // close connection only when we're certain application is finished
         poolConnection.close();
-        return(jsonObject);
+        return(result);
     } catch (err) {
         return(err);
     }; 
