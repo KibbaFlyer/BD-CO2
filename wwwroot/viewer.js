@@ -33,8 +33,14 @@ export function initViewer(container) {
 
 export function loadModel(viewer, urn) {
     return new Promise(function (resolve, reject) {
+        getSQLdata();
         function onDocumentLoadSuccess(doc) {
-            resolve(viewer.loadDocumentNode(doc, doc.getRoot().getDefaultGeometry()));
+            var viewableId = "517a1b5a-262e-7aa4-ff38-eed0417ed213" //"57851bd6-0496-7b2a-9de6-d53d2cb5ff0f"
+            // if a viewableId was specified, load that view, otherwise the default view
+            var viewables = (viewableId ? doc.getRoot().findByGuid(viewableId) : doc.getRoot().getDefaultGeometry());
+            console.log(viewables);
+            console.log(doc);
+            resolve(viewer.loadDocumentNode(doc, viewables));
         }
         function onDocumentLoadFailure(code, message, errors) {
             reject({ code, message, errors });
@@ -42,6 +48,5 @@ export function loadModel(viewer, urn) {
         viewer.setLightPreset(0);
         Autodesk.Viewing.Document.load('urn:' + urn, onDocumentLoadSuccess, onDocumentLoadFailure);
         // Populate the SQL data in the SQL_data object
-        getSQLdata();
     });
 }

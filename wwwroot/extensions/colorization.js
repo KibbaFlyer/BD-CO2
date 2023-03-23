@@ -15,7 +15,8 @@ const checkboxOptions = [
     'Installation',
     'Operational',
     'End-of-life',
-    'Emission per room'
+    'Emission per room',
+    'Emission per person popup',
 ];
 
 class Colorization extends Autodesk.Viewing.Extension {
@@ -99,9 +100,9 @@ class Colorization extends Autodesk.Viewing.Extension {
             this._panel.addLabel(tabId2,'Options:'); 
             // Adds all the dropdowns for the user. Changes the value of a variable when a color is chosen
 
-            this._panel.addSlider(tabId2, "First grouping upper limit (in kg)", 0, 1000, 100, function(valuechosen){
+            this._panel.addSlider(tabId2, "First grouping upper limit (in kg)", 0, 13000, 100, function(valuechosen){
                 firstlimit=valuechosen.detail.value},null);
-            this._panel.addSlider(tabId2, "Second grouping upper limit (in kg)", 0, 1000, 200, function(valuechosen){
+            this._panel.addSlider(tabId2, "Second grouping upper limit (in kg)", 0, 13000, 300, function(valuechosen){
                 secondlimit=valuechosen.detail.value},null);
 
             this._panel.addDropDownMenu(tabId2,'First grouping color',colorpicker,1,function(chosenvalue){
@@ -159,7 +160,7 @@ class Colorization extends Autodesk.Viewing.Extension {
                     })
                     .then(() => {
                         new Promise((resolve, reject) => {
-                            this.viewer.model.getBulkProperties2(leaves, { "propFilter": ["Type Name"] },
+                            this.viewer.model.getBulkProperties2(leaves, { "propFilter": ["Category","Type Name"] },
                                 output => {
                                     var firstgroup = [];
                                     var secondgroup = [];
@@ -168,7 +169,7 @@ class Colorization extends Autodesk.Viewing.Extension {
 
                                     output.forEach(element => {
                                         try {
-                                            var TypeName = element.properties[0].displayValue;
+                                            var TypeName = element.properties[1].displayValue;
                                             var SQL_values =
                                                 SQL_data[TypeName][0].CO2e_installation +
                                                 SQL_data[TypeName][0].CO2e_installation_trans_to_site +
@@ -182,11 +183,11 @@ class Colorization extends Autodesk.Viewing.Extension {
                                         } catch (error) {
                                             //console.log("Error at reading of SQL database: " + error)
                                         }
-                                        if (SQL_values >= secondlimit) {
+                                        if (SQL_values >= secondlimit && element.properties[0].displayValue != "Revit Spaces" && element.properties[0].displayValue != "Revit Rooms") {
                                             thirdgroup.push(element.dbId);
-                                        } else if (SQL_values > firstlimit) {
+                                        } else if (SQL_values > firstlimit && element.properties[0].displayValue != "Revit Spaces" && element.properties[0].displayValue != "Revit Rooms") {
                                             secondgroup.push(element.dbId);
-                                        } else if (SQL_values >= 0){
+                                        } else if (SQL_values >= 0 && element.properties[0].displayValue != "Revit Spaces" && element.properties[0].displayValue != "Revit Rooms"){
                                             firstgroup.push(element.dbId);
                                         }else{
                                             hidegroup.push(element.dbId);
@@ -222,7 +223,7 @@ class Colorization extends Autodesk.Viewing.Extension {
                     })
                     .then(() => {
                         new Promise((resolve, reject) => {
-                            this.viewer.model.getBulkProperties2(leaves, { "propFilter": ["Type Name"] },
+                            this.viewer.model.getBulkProperties2(leaves, { "propFilter": ["Category","Type Name"] },
                                 output => {
                                     var firstgroup = [];
                                     var secondgroup = [];
@@ -231,18 +232,18 @@ class Colorization extends Autodesk.Viewing.Extension {
 
                                     output.forEach(element => {
                                         try {
-                                            var TypeName = element.properties[0].displayValue;
+                                            var TypeName = element.properties[1].displayValue;
                                             var SQL_values =
                                                 SQL_data[TypeName][0].CO2e_rawmaterial +
                                                 SQL_data[TypeName][0].CO2e_rawmaterial_trans_to_manu
                                         } catch (error) {
                                             //console.log("Error at reading of SQL database: " + error)
                                         }
-                                        if (SQL_values >= secondlimit) {
+                                        if (SQL_values >= secondlimit && element.properties[0].displayValue != "Revit Spaces" && element.properties[0].displayValue != "Revit Rooms") {
                                             thirdgroup.push(element.dbId);
-                                        } else if (SQL_values > firstlimit) {
+                                        } else if (SQL_values > firstlimit && element.properties[0].displayValue != "Revit Spaces" && element.properties[0].displayValue != "Revit Rooms") {
                                             secondgroup.push(element.dbId);
-                                        } else if (SQL_values >= 0){
+                                        } else if (SQL_values >= 0 && element.properties[0].displayValue != "Revit Spaces" && element.properties[0].displayValue != "Revit Rooms"){
                                             firstgroup.push(element.dbId);
                                         }else{
                                             hidegroup.push(element.dbId);
@@ -277,7 +278,7 @@ class Colorization extends Autodesk.Viewing.Extension {
                     })
                     .then(() => {
                         new Promise((resolve, reject) => {
-                            this.viewer.model.getBulkProperties2(leaves, { "propFilter": ["Type Name"] },
+                            this.viewer.model.getBulkProperties2(leaves, { "propFilter": ["Category","Type Name"] },
                                 output => {
                                     var firstgroup = [];
                                     var secondgroup = [];
@@ -286,18 +287,18 @@ class Colorization extends Autodesk.Viewing.Extension {
 
                                     output.forEach(element => {
                                         try {
-                                            var TypeName = element.properties[0].displayValue;
+                                            var TypeName = element.properties[1].displayValue;
                                             var SQL_values =
                                                 SQL_data[TypeName][0].CO2e_manufacturing +
                                                 SQL_data[TypeName][0].CO2e_manufacturing_trans_to_stor
                                         } catch (error) {
                                             //console.log("Error at reading of SQL database: " + error)
                                         }
-                                        if (SQL_values >= secondlimit) {
+                                        if (SQL_values >= secondlimit && element.properties[0].displayValue != "Revit Spaces" && element.properties[0].displayValue != "Revit Rooms") {
                                             thirdgroup.push(element.dbId);
-                                        } else if (SQL_values > firstlimit) {
+                                        } else if (SQL_values > firstlimit && element.properties[0].displayValue != "Revit Spaces" && element.properties[0].displayValue != "Revit Rooms") {
                                             secondgroup.push(element.dbId);
-                                        } else if (SQL_values >= 0){
+                                        } else if (SQL_values >= 0 && element.properties[0].displayValue != "Revit Spaces" && element.properties[0].displayValue != "Revit Rooms"){
                                             firstgroup.push(element.dbId);
                                         }else{
                                             hidegroup.push(element.dbId);
@@ -332,7 +333,7 @@ class Colorization extends Autodesk.Viewing.Extension {
                     })
                     .then(() => {
                         new Promise((resolve, reject) => {
-                            this.viewer.model.getBulkProperties2(leaves, { "propFilter": ["Type Name"] },
+                            this.viewer.model.getBulkProperties2(leaves, { "propFilter": ["Category","Type Name"] },
                                 output => {
                                     var firstgroup = [];
                                     var secondgroup = [];
@@ -341,18 +342,18 @@ class Colorization extends Autodesk.Viewing.Extension {
 
                                     output.forEach(element => {
                                         try {
-                                            var TypeName = element.properties[0].displayValue;
+                                            var TypeName = element.properties[1].displayValue;
                                             var SQL_values =
                                                 SQL_data[TypeName][0].CO2e_installation +
                                                 SQL_data[TypeName][0].CO2e_installation_trans_to_site
                                         } catch (error) {
                                             //console.log("Error at reading of SQL database: " + error)
                                         }
-                                        if (SQL_values >= secondlimit) {
+                                        if (SQL_values >= secondlimit && element.properties[0].displayValue != "Revit Spaces" && element.properties[0].displayValue != "Revit Rooms") {
                                             thirdgroup.push(element.dbId);
-                                        } else if (SQL_values > firstlimit) {
+                                        } else if (SQL_values > firstlimit && element.properties[0].displayValue != "Revit Spaces" && element.properties[0].displayValue != "Revit Rooms") {
                                             secondgroup.push(element.dbId);
-                                        } else if (SQL_values >= 0){
+                                        } else if (SQL_values >= 0 && element.properties[0].displayValue != "Revit Spaces" && element.properties[0].displayValue != "Revit Rooms"){
                                             firstgroup.push(element.dbId);
                                         }else{
                                             hidegroup.push(element.dbId);
@@ -387,7 +388,7 @@ class Colorization extends Autodesk.Viewing.Extension {
                     })
                     .then(() => {
                         new Promise((resolve, reject) => {
-                            this.viewer.model.getBulkProperties2(leaves, { "propFilter": ["Type Name"] },
+                            this.viewer.model.getBulkProperties2(leaves, { "propFilter": ["Category","Type Name"] },
                                 output => {
                                     var firstgroup = [];
                                     var secondgroup = [];
@@ -396,18 +397,18 @@ class Colorization extends Autodesk.Viewing.Extension {
 
                                     output.forEach(element => {
                                         try {
-                                            var TypeName = element.properties[0].displayValue;
+                                            var TypeName = element.properties[1].displayValue;
                                             var SQL_values =
                                                 SQL_data[TypeName][0].CO2e_operation+
                                                 SQL_data[TypeName][0].CO2e_maintenance
                                         } catch (error) {
                                             //console.log("Error at reading of SQL database: " + error)
                                         }
-                                        if (SQL_values >= secondlimit) {
+                                        if (SQL_values >= secondlimit && element.properties[0].displayValue != "Revit Spaces" && element.properties[0].displayValue != "Revit Rooms") {
                                             thirdgroup.push(element.dbId);
-                                        } else if (SQL_values > firstlimit) {
+                                        } else if (SQL_values > firstlimit && element.properties[0].displayValue != "Revit Spaces" && element.properties[0].displayValue != "Revit Rooms") {
                                             secondgroup.push(element.dbId);
-                                        } else if (SQL_values >= 0){
+                                        } else if (SQL_values >= 0 && element.properties[0].displayValue != "Revit Spaces" && element.properties[0].displayValue != "Revit Rooms"){
                                             firstgroup.push(element.dbId);
                                         }else{
                                             hidegroup.push(element.dbId);
@@ -442,7 +443,7 @@ class Colorization extends Autodesk.Viewing.Extension {
                     })
                     .then(() => {
                         new Promise((resolve, reject) => {
-                            this.viewer.model.getBulkProperties2(leaves, { "propFilter": ["Type Name"] },
+                            this.viewer.model.getBulkProperties2(leaves, { "propFilter": ["Category","Type Name"] },
                                 output => {
                                     var firstgroup = [];
                                     var secondgroup = [];
@@ -451,17 +452,17 @@ class Colorization extends Autodesk.Viewing.Extension {
 
                                     output.forEach(element => {
                                         try {
-                                            var TypeName = element.properties[0].displayValue;
+                                            var TypeName = element.properties[1].displayValue;
                                             var SQL_values =
                                                 SQL_data[TypeName][0].CO2e_recycling
                                         } catch (error) {
                                             //console.log("Error at reading of SQL database: " + error)
                                         }
-                                        if (SQL_values >= secondlimit) {
+                                        if (SQL_values >= secondlimit && element.properties[0].displayValue != "Revit Spaces" && element.properties[0].displayValue != "Revit Rooms") {
                                             thirdgroup.push(element.dbId);
-                                        } else if (SQL_values > firstlimit) {
+                                        } else if (SQL_values > firstlimit && element.properties[0].displayValue != "Revit Spaces" && element.properties[0].displayValue != "Revit Rooms") {
                                             secondgroup.push(element.dbId);
-                                        } else if (SQL_values >= 0){
+                                        } else if (SQL_values >= 0 && element.properties[0].displayValue != "Revit Spaces" && element.properties[0].displayValue != "Revit Rooms"){
                                             firstgroup.push(element.dbId);
                                         }else{
                                             hidegroup.push(element.dbId);
@@ -482,14 +483,88 @@ class Colorization extends Autodesk.Viewing.Extension {
                     });
                     break;
                 case "6":
-                    var dataoutput = {};
                     console.log("Checked Per Room - Running filter");
-                    new Promise((resolve, reject) => {
-                        dataoutput = getCO2RoomInfo();
-                        resolve(dataoutput);
-                    }).then((output) => {
-                        createPopup(output,"Room CO2e");
+                    getCO2RoomInfo()
+                    .then((dataoutput) => {
+                        //createPopup(dataoutput, "Room CO2e");
+                        var leaves = [];
+                        new Promise((resolve, reject) => {
+                            this.viewer.model.getObjectTree(tree => {
+                                tree.enumNodeChildren(tree.getRootId(), dbId => {
+                                    if (tree.getChildCount(dbId) === 0) {
+                                        leaves.push(dbId);
+                                    }
+                                }, true);
+                            })
+                            resolve(leaves)
+                    }).then((leaves) => {
+                        this.viewer.model.getBulkProperties2(leaves, { "propFilter": ["Category","Room Name"]},
+                        output => {
+                            new Promise((resolve, reject) => {
+                            var firstgroup = [];
+                            var secondgroup = [];
+                            var thirdgroup = [];
+                            var hidegroup = [];
+                            console.log(output);
+                            output.forEach(element => {
+                                try {
+                                    var RoomName = element.properties[1].displayValue;
+                                    var CategoryValue = element.properties[0].displayValue;
+                                } catch (error) {
+                                    //console.log("Error at reading of SQL database: " + error)
+                                }
+                                if (dataoutput[RoomName] >= secondlimit && (CategoryValue == "Revit Spaces" || CategoryValue ==  "Revit Rooms")) {
+                                    thirdgroup.push(element.dbId);
+                                } else if (dataoutput[RoomName] > firstlimit && (CategoryValue == "Revit Spaces" || CategoryValue ==  "Revit Rooms")) {
+                                    secondgroup.push(element.dbId);
+                                } else if (dataoutput[RoomName] >= 0 && (CategoryValue == "Revit Spaces" || CategoryValue ==  "Revit Rooms")){
+                                    firstgroup.push(element.dbId);
+                                }else{
+                                    hidegroup.push(element.dbId);
+                                }
+                            });
+                            for (var dbIds of firstgroup) {
+                                this.viewer.setThemingColor(dbIds, chosenColor[0], this.viewer.model, true);}
+                            for (var dbIds of secondgroup) {
+                                this.viewer.setThemingColor(dbIds, chosenColor[1], this.viewer.model, true);}
+                            for (var dbIds of thirdgroup) {
+                                this.viewer.setThemingColor(dbIds, chosenColor[2], this.viewer.model, true);}
+                            for (var dbIds of hidegroup) {
+                                this.viewer.hide(dbIds, this.viewer.model, true);}
+                            console.log(firstgroup);
+                            console.log(secondgroup);
+                            console.log(thirdgroup);
+                            console.log(hidegroup);
+                            resolve(output);
+                            
+                        }),
+                        function(error) {
+                            console.log(error);
+                        };
+                    })
+                    });
+                    })
+                    .catch((error) => {
+                        console.error("Error getting CO2 room info:", error);
+                    });
+                    break;
+                case "7":
+                    getCO2RoomInfo()
+                    .then((dataoutput) => {
+                        createPopup(dataoutput, "Room CO2e");
                         console.log("Done creating popup");
+                        console.log(dataoutput);
+                        var leaves = [];
+                        new Promise((resolve, reject) => {
+                            this.viewer.model.getObjectTree(tree => {
+                                tree.enumNodeChildren(tree.getRootId(), dbId => {
+                                    if (tree.getChildCount(dbId) === 0) {
+                                        leaves.push(dbId);
+                                    }
+                                }, true);
+                            })
+                            resolve(leaves)
+                        })
                     })
                 }
         } else {
