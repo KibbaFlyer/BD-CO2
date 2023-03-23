@@ -5,6 +5,13 @@ body, html {
     font-family: ArtifaktElement;
 }
 
+.ColorizationIcon {
+    background-image: url('icons/zoom-in.png');
+    background-size: 24px;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
 #header, #preview, #overlay {
     position: absolute;
     width: 100%;
@@ -52,4 +59,12 @@ body, html {
 #models {
     flex: 0 1 auto;
     min-width: 2em;
+}
+
+#charts{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100px;
+    height: 100%
 }

@@ -1,4 +1,6 @@
 /// import * as Autodesk from "@types/forge-viewer";
+//import './extensions/LoggerExtension.js';
+import './extensions/SummaryExtension.js';
 
 async function getAccessToken(callback) {
     try {
@@ -19,7 +21,7 @@ export function initViewer(container) {
         Autodesk.Viewing.Initializer({ getAccessToken }, function () {
             const config = {
                 extensions: ['Autodesk.DocumentBrowser','CustomProperties','Autodesk.DataVisualization','Colorization',
-                "Autodesk.VisualClusters",]
+                "Autodesk.VisualClusters", /*"LoggerExtension",*/'SummaryExtension','Autodesk.AEC.LevelsExtension']
             };
             const viewer = new Autodesk.Viewing.GuiViewer3D(container, config);
             viewer.start();
@@ -43,39 +45,3 @@ export function loadModel(viewer, urn) {
         getSQLdata();
     });
 }
-/*
-// Colors all isolated objects from all shown models
-export function colorByValue(viewer) {
-    console.log("Coloring by value");
-    var dbids = getAlldbids();
-    var color = (0, 1, 1, 1);
-    const viewer = view.viewer;
-    model = this.model;
-    for (var model of Models) {
-        isolateddbIds = viewer.getIsolatedNodes(model)
-        for (var dbIds of isolateddbIds) {
-            viewer.setThemingColor(dbIds, new THREE.Vector4(color), model, false)
-        }
-    }
-}
-
-export function getAlldbids(model, viewer, propertyvalue, propertyname) {
-    model.search('"' + propertyvalue + '"', function (dbIds) {
-        if (dbIds.length == 0) {
-            viewer.hide(getLoadedIds())
-        } else {
-            viewer.isolate(dbIds, model)
-        }
-    }, function (error) { console.log("Error OnPropertyClick " + error) }, propertyname, searchHidden = false)
-}
-
-// Function to grab node of all visible models
-export function GetModels(viewer) {
-    var modelurn = [];
-    var visibleNodes = view.getVisibleNodes();
-    visibleNodes.forEach(node => {
-        var i = view.getModel(node);
-        modelurn.push(i);
-    });
-    return modelurn;
-    */

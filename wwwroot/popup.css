@@ -1,0 +1,45 @@
+.popup-table-RoomColor {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid black;
+    text-align: left;
+  }
+  
+  .popup-table-RoomColor th,
+  .popup-table-RoomColor td {
+    border: 1px solid black;
+    padding: 8px;
+  }
+  
+  .popup-table-RoomColor th {
+    background-color: lightgray;
+  }
+  
+  .popup-table-RoomColor tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .popup-table-RoomColor tr:hover {
+    background-color: #ddd;
+  }
+  
+  .popup-table-RoomColor th:not(:last-child),
+  .popup-table-RoomColor td:not(:last-child) {
+    border-right: 1px solid black;
+  }
+  
+  .popup-table-RoomColor th:first-child,
+  .popup-table-RoomColor td:first-child {
+    border-left: 1px solid black;
+  }
+  
+  .popup-table-RoomColor th:not(:first-child),
+  .popup-table-RoomColor td:not(:first-child) {
+    border-left: none;
+  }
+  
+  .inner-popup-table {
+    font-size: 1em;
+    background-color: lightgray;
+    margin-left: 5px;
+  }

@@ -65,7 +65,7 @@ service.uploadObject = async (objectName, filePath) => {
 service.translateObject = async (urn, rootFilename) => {
     const job = {
         input: { urn },
-        output: { formats: [{ type: 'svf', views: ['2d', '3d'] }] }
+        output: { formats: [{ type: 'svf', views: ['2d', '3d'],advanced:{generateMasterViews: true}}]}
     };
     if (rootFilename) {
         job.input.compressedUrn = true;
@@ -74,6 +74,9 @@ service.translateObject = async (urn, rootFilename) => {
     const resp = await new APS.DerivativesApi().translate(job, {}, null, await service.getInternalToken());
     return resp.body;
 };
+
+
+
 
 service.getManifest = async (urn) => {
     try {

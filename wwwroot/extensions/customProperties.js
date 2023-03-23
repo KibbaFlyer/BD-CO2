@@ -54,13 +54,13 @@ class CustomPropertyPanel extends Autodesk.Viewing.Extensions.ViewerPropertyPane
                     const search_prop_dispvalue_promise = new Promise((resolveInner,rejectInner) => {
                         props.properties.forEach(prop => {
                             if (prop.attributeName.startsWith("Type Name")) {
-                                console.log(prop.displayValue);
+                                
                                 propertyValue = prop.displayValue;
                             }
                         });
                         resolveInner(propertyValue);
                     }).then((value) => {
-                        console.log(value);
+                        
                         }, (error) => {
                             console.log(error)
                     });
@@ -69,7 +69,6 @@ class CustomPropertyPanel extends Autodesk.Viewing.Extensions.ViewerPropertyPane
         });
 
         search_blob_promise.then((value) => {
-            console.log("Property value1: " + value);
             this.addProperty('dbId', this.propertyNodeId, "dbid");
             // CO2 data (from SQL database)
             this.addProperty('CO2e Total (kg)',

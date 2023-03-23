@@ -15,7 +15,7 @@ const checkboxOptions = [
     'Installation',
     'Operational',
     'End-of-life',
-    'Per room square meter'
+    'Emission per room'
 ];
 
 class Colorization extends Autodesk.Viewing.Extension {
@@ -92,19 +92,25 @@ class Colorization extends Autodesk.Viewing.Extension {
             let tabId1 = 'filtertoggleTab';
             let tabId2 = 'colorizationsettingsTab';
             this._panel_tab = this._panel.addTab(tabId1, 'Filter toggle' /*,options*/);
-            this._panel_tab2 = this._panel.addTab(tabId2, 'Color picker' /*,options*/);
+            this._panel_tab2 = this._panel.addTab(tabId2, 'Color picker and grouping limits' /*,options*/);
             // The user starts with the first tab
             this._panel.selectTab(tabId1);
             // Add label to make sure the dropdowns shows in the window
             this._panel.addLabel(tabId2,'Options:'); 
             // Adds all the dropdowns for the user. Changes the value of a variable when a color is chosen
-            this._panel.addDropDownMenu(tabId2,'CO2e emissions 0 kg -> '+firstlimit+' kg',colorpicker,1,function(chosenvalue){
+
+            this._panel.addSlider(tabId2, "First grouping upper limit (in kg)", 0, 1000, 100, function(valuechosen){
+                firstlimit=valuechosen.detail.value},null);
+            this._panel.addSlider(tabId2, "Second grouping upper limit (in kg)", 0, 1000, 200, function(valuechosen){
+                secondlimit=valuechosen.detail.value},null);
+
+            this._panel.addDropDownMenu(tabId2,'First grouping color',colorpicker,1,function(chosenvalue){
                 chosenColor[0] = colorpickerVector[chosenvalue.detail.target.selectedIndex];
             });
-            this._panel.addDropDownMenu(tabId2,'CO2e emissions '+firstlimit+'+ kg -> '+secondlimit+' kg',colorpicker,2,function(chosenvalue){
+            this._panel.addDropDownMenu(tabId2,'Second grouping color',colorpicker,2,function(chosenvalue){
                 chosenColor[1] = colorpickerVector[chosenvalue.detail.target.selectedIndex];
             });
-            this._panel.addDropDownMenu(tabId2,'CO2e emissions '+secondlimit+'+ kg',colorpicker,3,function(chosenvalue){
+            this._panel.addDropDownMenu(tabId2,'Third grouping color',colorpicker,3,function(chosenvalue){
                 chosenColor[2] = colorpickerVector[chosenvalue.detail.target.selectedIndex];
             });
 
@@ -476,7 +482,15 @@ class Colorization extends Autodesk.Viewing.Extension {
                     });
                     break;
                 case "6":
+                    var dataoutput = {};
                     console.log("Checked Per Room - Running filter");
+                    new Promise((resolve, reject) => {
+                        dataoutput = getCO2RoomInfo();
+                        resolve(dataoutput);
+                    }).then((output) => {
+                        createPopup(output,"Room CO2e");
+                        console.log("Done creating popup");
+                    })
                 }
         } else {
             console.log("Unchecked");
@@ -484,95 +498,7 @@ class Colorization extends Autodesk.Viewing.Extension {
             this.viewer.showAll(this.viewer.model);
         }
     }
-    
-    /*
-    changeSelectionBehaviour(checked,indexOfChecked) {
-        if (checked) {
-            switch(indexOfChecked){
-                case "0":
-                    console.log("Checked Total - Running filter");
-                    //this.viewer.model.getObjectTree(function(result){console.log(result)},null);
-                    let leaves = [];
-                    new Promise((resolve,reject) => {
-                        this.viewer.model.getObjectTree(function (tree) {
-                            tree.enumNodeChildren(tree.getRootId(), function (dbId) {
-                                if (tree.getChildCount(dbId) === 0) {
-                                    leaves.push(dbId);
-                                }
-                            }, true);
-                        })
-                        resolve(leaves)
-                    })
-                        .then(() => {
-                            new Promise((resolve,reject) => {
-                            this.viewer.model.getBulkProperties2(leaves,{"propFilter":["Type Name"]},
-                            function(output){
-                                console.log(output);
-                                var firstgroup = [];
-                                var secondgroup = [];
-                                var thirdgroup = [];
-                                //console.log(output);
-                                output.forEach(element => {
-                                    try{
-                                        var TypeName = element.properties[0].displayValue;
-                                        // Sum all SQL values
-                                        var SQL_values = 
-                                        SQL_data[TypeName][0].CO2e_installation+
-                                        SQL_data[TypeName][0].CO2e_installation_trans_to_site+
-                                        SQL_data[TypeName][0].CO2e_maintenance+
-                                        SQL_data[TypeName][0].CO2e_manufacturing+
-                                        SQL_data[TypeName][0].CO2e_manufacturing_trans_to_stor+
-                                        SQL_data[TypeName][0].CO2e_operation+
-                                        SQL_data[TypeName][0].CO2e_rawmaterial+
-                                        SQL_data[TypeName][0].CO2e_rawmaterial_trans_to_manu+
-                                        SQL_data[TypeName][0].CO2e_recycling
-                                    }catch(error){
-                                        console.log("Error at reading of SQL database: " + error)
-                                    }
-                                    if(SQL_values > 200){
-                                        thirdgroup.push(element.dbId);
-                                    }else if(SQL_values > 100){
-                                        secondgroup.push(element.dbId);
-                                    }else{
-                                        firstgroup.push(element.dbId);
-                                    }
-                                });
-                                this.setThemingColor(firstgroup, colorpickerVector[0], null, false);
-                                this.setThemingColor(secondgroup, colorpickerVector[1], null, false);
-                                this.setThemingColor(thirdgroup, colorpickerVector[2], null, false);
-                                resolve(output);
-                            }, null);
-                            })
-                        });
-
-                    //this.getObjectTree(onSuccessCallback, onErrorCallback)
-                    break;
-                case "1":
-                    console.log("Checked Rawmaterial - Running filter");
-                    break;
-                case "2":
-                    console.log("Checked Manufacturing - Running filter");
-                    break;
-                case "3":
-                    console.log("Checked Installation - Running filter");
-                    break;
-                case "4":
-                    console.log("Checked Operation - Running filter");
-                    break;
-                case "5":
-                    console.log("Checked End of life - Running filter");
-                    break;
-                }
-            //this.viewer.addEventListener(Autodesk.Viewing.SELECTION_CHANGED_EVENT, this.onSelectionBinded);
-        } else {
-            console.log("Unchecked");
-            this.clearThemingColors(this.model);
-            //this.viewer.removeEventListener(Autodesk.Viewing.SELECTION_CHANGED_EVENT, this.onSelectionBinded);
-        }
-    }*/
-
     onSelectionEvent(event,filterparameter){
-
     }
 }
 
