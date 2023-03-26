@@ -1,5 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/viewer3D.js"></script>
+<script src="/main.js" type="module"></script>
+<script src="/sqlToUser.js"></script>
+<script src="../extensions/customProperties.js"></script>
+<script src="../extensions/colorization.js"></script>
+<script src="../extensions/SQLdatacollection.js"></script>
+<script src="../extensions/popup.js"></script>
 
 <head>
     <meta charset="UTF-8">
@@ -20,17 +28,19 @@
         <input style="display: none" type="file" id="input">
     </div>
     
-    <div class="row fill">
-      <div id="preview"></div>
-      <div id="overlay"></div>
+    <div class="main-content">
+        <div class="row fill">
+            <div id="preview"></div>
+            <div id="overlay"></div>
+        </div>
+        <div class="chart-wrapper">
+            <div class="chart-container">
+                <canvas id="charts1"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="charts2"></canvas>
+            </div>
+        </div>
     </div>
-    <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/viewer3D.js"></script>
-    <script src="/main.js" type="module"></script>
-    <script src="/sqlToUser.js"></script>
-    <script src="../extensions/customProperties.js"></script>
-    <script src="../extensions/colorization.js"></script>
-    <script src="../extensions/heatmap.js"></script>
     </body>
-    <script src="../extensions/popup.js"></script>
-    <div id="charts"></div>
 </html>

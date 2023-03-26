@@ -24,7 +24,7 @@ function createPopup(data,name) {
             <thead>
             <tr>
                 <th>Room name</th>
-                <th>Total CO2e emission (kg)</th>
+                <th>Total CO2e emission [kg]</th>
             </tr>
             </thead>
             <tbody>

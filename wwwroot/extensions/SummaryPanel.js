@@ -34,7 +34,7 @@ export class SummaryPanel extends Autodesk.Viewing.UI.PropertyPanel {
             }, {});
 
             const category = propName;
-            this.addProperty('Sum total (kg)', 
+            this.addProperty('Sum total [kg]', 
             (summarizedData.CO2e_installation+
             summarizedData.CO2e_installation_trans_to_site+
             summarizedData.CO2e_operation+
@@ -42,11 +42,11 @@ export class SummaryPanel extends Autodesk.Viewing.UI.PropertyPanel {
             summarizedData.CO2e_rawmaterial+
             summarizedData.CO2e_rawmaterial_trans_to_manu).toLocaleString()
             , category);
-            this.addProperty('Sum raw material (kg)', (summarizedData.CO2e_rawmaterial_trans_to_manu+summarizedData.CO2e_rawmaterial).toLocaleString(), category);
-            this.addProperty('Sum manufacturing (kg)', (summarizedData.CO2e_manufacturing_trans_to_stor+summarizedData.CO2e_manufacturing).toLocaleString(), category);
-            this.addProperty('Sum installation (kg)', (summarizedData.CO2e_installation+summarizedData.CO2e_installation_trans_to_site).toLocaleString(), category);
-            this.addProperty('Sum operation (kg)', (summarizedData.CO2e_operation).toLocaleString(), category);
-            this.addProperty('Sum recycling (kg)', (summarizedData.CO2e_recycling).toLocaleString(), category);
+            this.addProperty('Sum raw material [kg]', (summarizedData.CO2e_rawmaterial_trans_to_manu+summarizedData.CO2e_rawmaterial).toLocaleString(), category);
+            this.addProperty('Sum manufacturing [kg]', (summarizedData.CO2e_manufacturing_trans_to_stor+summarizedData.CO2e_manufacturing).toLocaleString(), category);
+            this.addProperty('Sum installation [kg]', (summarizedData.CO2e_installation+summarizedData.CO2e_installation_trans_to_site).toLocaleString(), category);
+            this.addProperty('Sum operation [kg]', (summarizedData.CO2e_operation).toLocaleString(), category);
+            this.addProperty('Sum recycling [kg]', (summarizedData.CO2e_recycling).toLocaleString(), category);
 
             
 
@@ -65,15 +65,15 @@ export class SummaryPanel extends Autodesk.Viewing.UI.PropertyPanel {
             // if (count > 0) {
             //     const category = propName;
             //     //this.addProperty('Count', count, category);
-            //     this.addProperty('Sum total (kg)', this.toDisplayUnits(function(){
+            //     this.addProperty('Sum total [kg]', this.toDisplayUnits(function(){
             //         SQL_data.reduce().+
 
             //     }), category);
-            //     this.addProperty('Sum raw material (kg)', this.toDisplayUnits(sum, units, precision), category);
-            //     this.addProperty('Sum manufacturing (kg)', this.toDisplayUnits(sum, units, precision), category);
-            //     this.addProperty('Sum installation (kg)', this.toDisplayUnits(sum, units, precision), category);
-            //     this.addProperty('Sum operation (kg)', this.toDisplayUnits(sum, units, precision), category);
-            //     this.addProperty('Sum recycling (kg)', this.toDisplayUnits(sum, units, precision), category);
+            //     this.addProperty('Sum raw material [kg]', this.toDisplayUnits(sum, units, precision), category);
+            //     this.addProperty('Sum manufacturing [kg]', this.toDisplayUnits(sum, units, precision), category);
+            //     this.addProperty('Sum installation [kg]', this.toDisplayUnits(sum, units, precision), category);
+            //     this.addProperty('Sum operation [kg]', this.toDisplayUnits(sum, units, precision), category);
+            //     this.addProperty('Sum recycling [kg]', this.toDisplayUnits(sum, units, precision), category);
             //     //this.addProperty('Avg', this.toDisplayUnits((sum / count), units, precision), category);
             //     //this.addProperty('Min', this.toDisplayUnits(min, units, precision), category);
             //     //this.addProperty('Max', this.toDisplayUnits(max, units, precision), category);

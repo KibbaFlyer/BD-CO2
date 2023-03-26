@@ -16,34 +16,6 @@ const config = {
     }
 }
 
-/*
-    //Use Azure VM Managed Identity to connect to the SQL database
-    const config = {
-        server: process.env["db_server"],
-        port: process.env["db_port"],
-        database: process.env["db_database"],
-        authentication: {
-            type: 'azure-active-directory-msi-vm'
-        },
-        options: {
-            encrypt: true
-        }
-    }
-
-    //Use Azure App Service Managed Identity to connect to the SQL database
-    const config = {
-        server: process.env["db_server"],
-        port: process.env["db_port"],
-        database: process.env["db_database"],
-        authentication: {
-            type: 'azure-active-directory-msi-app-service'
-        },
-        options: {
-            encrypt: true
-        }
-    }
-*/
-
 router.get('/sql/connectAndQuery', async function (req, res, next) {
     try {
         var sql_data = await connectAndQuery();

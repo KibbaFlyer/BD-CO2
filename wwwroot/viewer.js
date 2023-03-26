@@ -1,6 +1,8 @@
 /// import * as Autodesk from "@types/forge-viewer";
 //import './extensions/LoggerExtension.js';
 import './extensions/SummaryExtension.js';
+import { myChart1, myChart2 } from './extensions/charts.js';
+
 
 async function getAccessToken(callback) {
     try {
@@ -32,8 +34,8 @@ export function initViewer(container) {
 }
 
 export function loadModel(viewer, urn) {
-    return new Promise(function (resolve, reject) {
-        getSQLdata();
+    return new Promise(async function (resolve, reject) {
+        await getSQLdata();
         function onDocumentLoadSuccess(doc) {
             var viewableId = "517a1b5a-262e-7aa4-ff38-eed0417ed213" //"57851bd6-0496-7b2a-9de6-d53d2cb5ff0f"
             // if a viewableId was specified, load that view, otherwise the default view
@@ -41,6 +43,18 @@ export function loadModel(viewer, urn) {
             console.log(viewables);
             console.log(doc);
             resolve(viewer.loadDocumentNode(doc, viewables));
+            viewer.addEventListener(
+                Autodesk.Viewing.GEOMETRY_LOADED_EVENT,
+                async function onGeometryLoaded() {
+                  viewer.removeEventListener(
+                    Autodesk.Viewing.GEOMETRY_LOADED_EVENT,
+                    onGeometryLoaded
+                  );
+                  await myChart1();
+                  await myChart2();
+                }
+              );
+            resolve();
         }
         function onDocumentLoadFailure(code, message, errors) {
             reject({ code, message, errors });

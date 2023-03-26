@@ -16,7 +16,7 @@ const checkboxOptions = [
     'Operational',
     'End-of-life',
     'Emission per room',
-    'Emission per person popup',
+    'Emission per room popup',
 ];
 
 class Colorization extends Autodesk.Viewing.Extension {

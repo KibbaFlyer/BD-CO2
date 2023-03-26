@@ -71,7 +71,7 @@ class CustomPropertyPanel extends Autodesk.Viewing.Extensions.ViewerPropertyPane
         search_blob_promise.then((value) => {
             this.addProperty('dbId', this.propertyNodeId, "dbid");
             // CO2 data (from SQL database)
-            this.addProperty('CO2e Total (kg)',
+            this.addProperty('CO2e Total [kg]',
             SQL_data[value][0].CO2e_installation +
             SQL_data[value][0].CO2e_installation_trans_to_site +
             SQL_data[value][0].CO2e_maintenance +
@@ -82,15 +82,15 @@ class CustomPropertyPanel extends Autodesk.Viewing.Extensions.ViewerPropertyPane
             SQL_data[value][0].CO2e_rawmaterial_trans_to_manu +
             SQL_data[value][0].CO2e_recycling
             ,"Emission Data");
-            this.addProperty('CO2e Raw Material (kg)', SQL_data[value][0].CO2e_rawmaterial, "Emission Data");
-            this.addProperty('CO2e Raw Material Transport (kg)', SQL_data[value][0].CO2e_rawmaterial_trans_to_manu, "Emission Data");
-            this.addProperty('CO2e Manufacturing (kg)', SQL_data[value][0].CO2e_manufacturing, "Emission Data");
-            this.addProperty('CO2e Manufacturing Transport (kg)', SQL_data[value][0].CO2e_manufacturing_trans_to_stor, "Emission Data");
-            this.addProperty('CO2e Installation (kg)', SQL_data[value][0].CO2e_installation, "Emission Data");
-            this.addProperty('CO2e Installation transport (kg)', SQL_data[value][0].CO2e_installation_trans_to_site, "Emission Data");
-            this.addProperty('CO2e Operation (kg)', SQL_data[value][0].CO2e_operation, "Emission Data");
-            this.addProperty('CO2e Maintenance(kg)', SQL_data[value][0].CO2e_maintenance, "Emission Data");
-            this.addProperty('CO2e Recycling (kg)', SQL_data[value][0].CO2e_recycling, "Emission Data");
+            this.addProperty('CO2e Raw Material [kg]', SQL_data[value][0].CO2e_rawmaterial, "Emission Data");
+            this.addProperty('CO2e Raw Material Transport [kg]', SQL_data[value][0].CO2e_rawmaterial_trans_to_manu, "Emission Data");
+            this.addProperty('CO2e Manufacturing [kg]', SQL_data[value][0].CO2e_manufacturing, "Emission Data");
+            this.addProperty('CO2e Manufacturing Transport [kg]', SQL_data[value][0].CO2e_manufacturing_trans_to_stor, "Emission Data");
+            this.addProperty('CO2e Installation [kg]', SQL_data[value][0].CO2e_installation, "Emission Data");
+            this.addProperty('CO2e Installation transport [kg]', SQL_data[value][0].CO2e_installation_trans_to_site, "Emission Data");
+            this.addProperty('CO2e Operation [kg]', SQL_data[value][0].CO2e_operation, "Emission Data");
+            this.addProperty('CO2e Maintenance[kg]', SQL_data[value][0].CO2e_maintenance, "Emission Data");
+            this.addProperty('CO2e Recycling [kg]', SQL_data[value][0].CO2e_recycling, "Emission Data");
         }, (error) => {console.log(error)});
         if (!this.hasProperties()) return;
     }
